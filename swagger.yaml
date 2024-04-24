@@ -1,0 +1,121 @@
+openapi: 3.0.0
+paths:
+  /message:
+    post:
+      operationId: MessageController_create
+      summary: Create Message
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMessageDtoImplement'
+      responses:
+        '201':
+          description: create message
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        '400':
+          description: La requete est incorrecte
+        '500':
+          description: Erreur interne au serveur
+      tags: &ref_0
+        - message
+    get:
+      operationId: MessageController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: *ref_0
+  /message/{id}:
+    get:
+      operationId: MessageController_findOne
+      summary: Find one messge by id
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: find one message by id
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        '400':
+          description: La requete est incorrecte
+        '404':
+          description: La requete a echoue a trouver le message
+        '500':
+          description: Erreur interne au serveur
+      tags: *ref_0
+    delete:
+      operationId: MessageController_remove
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: *ref_0
+info:
+  title: Portofolio Api v1
+  description: Simple Api Portofolio
+  version: 1.0.0
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    CreateMessageDtoImplement:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 4
+          maxLength: 25
+        email:
+          type: string
+          format: email
+        content:
+          type: string
+          minLength: 10
+          maxLength: 400
+      required:
+        - name
+        - email
+        - content
+    Message:
+      type: object
+      properties:
+        id:
+          type: number
+          uniqueItems: true
+        name:
+          type: string
+          minLength: 4
+          maxLength: 25
+        email:
+          type: string
+          format: email
+        content:
+          type: string
+          maxLength: 400
+          minLength: 10
+        createAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - name
+        - email
+        - content
+        - createAt

@@ -49,18 +49,9 @@ export class MessageRepositoryImplement
   }
 
   async createMessage(messageData: CreateMessageDto): Promise<Message> {
-    let createdMessage: CreateMessageDtoImplement =
-      new CreateMessageDtoImplement();
-    createdMessage = { ...messageData };
-    /*if (!MessageSchemaDto.parse(createdMessage)) {
-      throw new Error("Le messages n'est pas du type attendu");
-    }*/
+    const createdMessage: CreateMessageDtoImplement = { ...messageData };
 
-    const message = new Message();
-    message.name = createdMessage.name.value;
-    message.email = createdMessage.email.value;
-    message.content = createdMessage.content.value;
-    const result = this.messageRepository.create(message);
+    const result = this.messageRepository.create(createdMessage);
     return await this.messageRepository.save(result);
   }
 }
