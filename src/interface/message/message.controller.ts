@@ -1,6 +1,8 @@
 import { Message } from '@domain/entities';
 import {
   CreateMessageUsecaseImplement,
+  DeleteMessageUseCaseImplement,
+  FindAllMessagesByDateUseCaseImplement,
   GetMessageUsecaseImplement,
 } from '@infrastructure/use-cases';
 import {
@@ -31,6 +33,8 @@ export class MessageController {
   constructor(
     private readonly createMessageUsecase: CreateMessageUsecaseImplement,
     private readonly getMessageUsecase: GetMessageUsecaseImplement,
+    private readonly findMessagesByDateUseCase: FindAllMessagesByDateUseCaseImplement,
+    private readonly deleteMessageById: DeleteMessageUseCaseImplement,
   ) {}
 
   @Post()
@@ -52,8 +56,28 @@ export class MessageController {
     return await this.createMessageUsecase.execute(createdMessage);
   }
 
+  @ApiOperation({ summary: 'Find one messge by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'find one message by id',
+    type: [Message],
+  })
+  @ApiBadRequestResponse({ description: 'La requete est incorrecte' })
+  @ApiNotFoundResponse({
+    description: 'La requete a echoue a trouver une liste de messages',
+  })
+  @ApiInternalServerErrorResponse({ description: 'Erreur interne au serveur' })
   @Get()
-  findAll() {}
+  async findAllOrderDateDesc(): Promise<Message[]> {
+    const result = await this.findMessagesByDateUseCase.execute();
+
+    if (!result) {
+      throw new NotFoundException(
+        `Error le message n'existe pas dans la base de donnee`,
+      );
+    }
+    return result;
+  }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one messge by id' })
@@ -85,6 +109,31 @@ export class MessageController {
     return dataMessage;
   }
 
+  @ApiOperation({ summary: 'Delete message by id' })
+  @ApiResponse({
+    status: 204,
+    description: 'Delete message by id',
+    type: [Message],
+  })
+  @ApiBadRequestResponse({ description: 'La requete est incorrecte' })
+  @ApiNotFoundResponse({
+    description: 'La requete a echoue a trouver le message',
+  })
+  @ApiInternalServerErrorResponse({ description: 'Erreur interne au serveur' })
   @Delete(':id')
-  remove() {}
+  async remove(@Param('id') id: number): Promise<Message> {
+    const result = await this.deleteMessageById.execute(id);
+
+    if (!result) {
+      throw new NotFoundException(
+        `Error le message n'existe pas dans la base de donnee`,
+      );
+    }
+    if (!MessageSchemaDto.parse(result)) {
+      throw new BadRequestException(
+        `Le resultat attendu ne correspond pas au schema`,
+      );
+    }
+    return result;
+  }
 }

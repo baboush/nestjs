@@ -27,11 +27,24 @@ paths:
       tags: &ref_0
         - message
     get:
-      operationId: MessageController_findAll
+      operationId: MessageController_findAllOrderDateDesc
+      summary: Find one messge by id
       parameters: []
       responses:
         '200':
-          description: ''
+          description: find one message by id
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        '400':
+          description: La requete est incorrecte
+        '404':
+          description: La requete a echoue a trouver une liste de messages
+        '500':
+          description: Erreur interne au serveur
       tags: *ref_0
   /message/{id}:
     get:
@@ -61,10 +74,28 @@ paths:
       tags: *ref_0
     delete:
       operationId: MessageController_remove
-      parameters: []
+      summary: Delete message by id
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
       responses:
-        '200':
-          description: ''
+        '204':
+          description: Delete message by id
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        '400':
+          description: La requete est incorrecte
+        '404':
+          description: La requete a echoue a trouver le message
+        '500':
+          description: Erreur interne au serveur
       tags: *ref_0
 info:
   title: Portofolio Api v1

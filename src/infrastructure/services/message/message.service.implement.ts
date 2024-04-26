@@ -1,5 +1,5 @@
 import { Message } from '@domain/entities';
-import { MessageService } from '@domain/interfaces';
+import { MessageService } from '@domain/interfaces/services';
 import { CreateMessageDto } from '@domain/interfaces/dto';
 import { MessageRepositoryImplement } from '@infrastructure/repositories';
 import {
@@ -23,8 +23,23 @@ export class MessageServiceImplement implements MessageService {
     return await this.messageRepository.createMessage(createdMessage);
   }
 
-  findAll(): string {
-    return `This action returns all message`;
+  async findAllOrderByDate(): Promise<Message[]> {
+    const result = await this.messageRepository.findAllMessagesOrderByDate();
+
+    if (!result) {
+      throw new NotFoundException(
+        `Le message n'existe pas dans la base de donnee`,
+      );
+    }
+
+    const messagesData: GetMessageDtoImplement[] = result.map((message) => ({
+      id: message.id,
+      name: message.name,
+      email: message.email,
+      content: message.content,
+      createAt: message.createAt,
+    }));
+    return messagesData;
   }
 
   async findOne(id: number): Promise<Message> {
@@ -40,7 +55,22 @@ export class MessageServiceImplement implements MessageService {
     return message;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} message`;
+  async remove(id: number): Promise<Message> {
+    const result = await this.messageRepository.deleteMessage(id);
+
+    if (!result) {
+      throw new NotFoundException(
+        `Le message n'existe pas dans la base de donnee`,
+      );
+    }
+    const messagesData: GetMessageDtoImplement = {
+      id: result.id,
+      name: result.name,
+      email: result.email,
+      content: result.content,
+      createAt: result.createAt,
+    };
+
+    return messagesData;
   }
 }

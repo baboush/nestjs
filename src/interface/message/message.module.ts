@@ -6,6 +6,8 @@ import { MessageServiceImplement } from '@infrastructure/services';
 import { MessageRepositoryImplement } from '@infrastructure/repositories';
 import {
   CreateMessageUsecaseImplement,
+  DeleteMessageUseCaseImplement,
+  FindAllMessagesByDateUseCaseImplement,
   GetMessageUsecaseImplement,
 } from '@infrastructure/use-cases';
 
@@ -17,6 +19,8 @@ import {
     MessageRepositoryImplement,
     CreateMessageUsecaseImplement,
     GetMessageUsecaseImplement,
+    FindAllMessagesByDateUseCaseImplement,
+    DeleteMessageUseCaseImplement,
   ],
 })
 export class MessageModule {}

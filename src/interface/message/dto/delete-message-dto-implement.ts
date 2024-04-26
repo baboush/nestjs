@@ -1,9 +1,21 @@
-import { CreateMessageDto } from '@domain/interfaces/dto';
+import { RemoveMessageDto } from '@domain/interfaces/dto';
 import { Content, Email, Name } from '@domain/schemas';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
+import {
+  IsDate,
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Length,
+} from 'class-validator';
 
-export class CreateMessageDtoImplement implements CreateMessageDto {
+export class DeleteMessageDtoImplement implements RemoveMessageDto {
+  @IsNotEmpty()
+  @IsNumber()
+  @ApiProperty({ type: 'number' })
+  readonly id: number;
+
   @IsNotEmpty()
   @IsString()
   @Length(4, 25)
@@ -20,4 +32,9 @@ export class CreateMessageDtoImplement implements CreateMessageDto {
   @Length(10, 400)
   @ApiProperty({ type: 'string', minLength: 10, maxLength: 400 })
   readonly content: Content;
+
+  @IsString()
+  @IsDate()
+  @ApiProperty({ type: 'data' })
+  readonly createAt: Date;
 }

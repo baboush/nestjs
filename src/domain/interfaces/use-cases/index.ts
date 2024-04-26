@@ -1,3 +1,13 @@
-import { CreateMessageUsecase, GetMessageUsecase } from './message';
+import {
+  CreateMessageUsecase,
+  GetMessageUsecase,
+  FindAllMessagesOrderByDate,
+  RemoveMessageUseCase,
+} from './message';
 
-export { CreateMessageUsecase, GetMessageUsecase };
+export {
+  CreateMessageUsecase,
+  GetMessageUsecase,
+  FindAllMessagesOrderByDate,
+  RemoveMessageUseCase,
+};

@@ -1,5 +1,5 @@
-import { GetMessageDto } from '@domain/interfaces/dto';
+import { Message } from '@domain/entities';
 
 export interface GetMessageUsecase {
-  execute(id: number): Promise<GetMessageDto>;
+  execute(id: number): Promise<Message>;
 }

@@ -1,5 +1,5 @@
 import { Message } from '@domain/entities';
-import { CreateMessageDto } from '@domain/interfaces';
+import { CreateMessageDto } from '@domain/interfaces/dto';
 import { CreateMessageUsecase } from '@domain/interfaces/use-cases';
 import { MessageServiceImplement } from '@infrastructure/services';
 import { Injectable } from '@nestjs/common';
