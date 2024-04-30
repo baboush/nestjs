@@ -15,17 +15,18 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import {
-  ApiBadRequestResponse,
-  ApiInternalServerErrorResponse,
-  ApiNotFoundResponse,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
 import { GetMessageDto } from '@domain/interfaces/dto';
 import { MessageSchemaDto } from '@domain/schemas/message.schema';
 import { CreateMessageDtoImplement, GetMessageDtoImplement } from './dto';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiBadRequestResponse,
+  ApiNotFoundResponse,
+  ApiInternalServerErrorResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('message')
 @ApiTags('message')
@@ -38,10 +39,14 @@ export class MessageController {
   ) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create Message' })
+  @ApiResponse({ status: 200, description: 'Réponse réussie' })
+  @ApiOperation({ summary: 'Description de create' })
+  @ApiNotFoundResponse({ description: 'Ressource non trouvée' })
+  @ApiInternalServerErrorResponse({ description: 'Erreur interne du serveur' })
+  /* @ApiOperation({ summary: 'Create Message' })
   @ApiResponse({ status: 201, description: 'create message', type: [Message] })
   @ApiBadRequestResponse({ description: 'La requete est incorrecte' })
-  @ApiInternalServerErrorResponse({ description: 'Erreur interne au serveur' })
+  @ApiInternalServerErrorResponse({ description: 'Erreur interne au serveur' })*/
   async create(
     @Body() dataMessage: CreateMessageDtoImplement,
   ): Promise<Message> {
@@ -68,6 +73,12 @@ export class MessageController {
   })
   @ApiInternalServerErrorResponse({ description: 'Erreur interne au serveur' })
   @Get()
+  @ApiResponse({ status: 200, description: 'Réponse réussie' })
+  @ApiOperation({
+    summary: 'Description de findAllOrderDateDesc',
+  })
+  @ApiNotFoundResponse({ description: 'Ressource non trouvée' })
+  @ApiInternalServerErrorResponse({ description: 'Erreur interne du serveur' })
   async findAllOrderDateDesc(): Promise<Message[]> {
     const result = await this.findMessagesByDateUseCase.execute();
 
@@ -91,6 +102,12 @@ export class MessageController {
     description: 'La requete a echoue a trouver le message',
   })
   @ApiInternalServerErrorResponse({ description: 'Erreur interne au serveur' })
+  @ApiResponse({ status: 200, description: 'Réponse réussie' })
+  @ApiOperation({
+    summary: 'Description de findOne',
+  })
+  @ApiNotFoundResponse({ description: 'Ressource non trouvée' })
+  @ApiInternalServerErrorResponse({ description: 'Erreur interne du serveur' })
   async findOne(@Param('id') id: number): Promise<GetMessageDto> {
     let dataMessage: GetMessageDto = new GetMessageDtoImplement();
     const result = await this.getMessageUsecase.execute(id);
@@ -116,11 +133,13 @@ export class MessageController {
     type: [Message],
   })
   @ApiBadRequestResponse({ description: 'La requete est incorrecte' })
-  @ApiNotFoundResponse({
-    description: 'La requete a echoue a trouver le message',
-  })
   @ApiInternalServerErrorResponse({ description: 'Erreur interne au serveur' })
   @Delete(':id')
+  @ApiResponse({ status: 200, description: 'Réponse réussie' })
+  @ApiOperation({
+    summary: 'Description de remove',
+  })
+  @ApiNotFoundResponse({ description: 'Ressource non trouvée' })
   async remove(@Param('id') id: number): Promise<Message> {
     const result = await this.deleteMessageById.execute(id);
 

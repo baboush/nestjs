@@ -1,3 +1,4 @@
+import { Project } from '@domain/entities';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Message } from 'src/domain/entities/message.entity';
 
@@ -11,7 +12,7 @@ export function AppDataSource(): TypeOrmModuleOptions {
     database: 'test_data',
     synchronize: true,
     logging: true,
-    entities: [Message],
+    entities: [Message, Project],
     subscribers: [],
     migrations: [],
   };
