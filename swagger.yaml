@@ -3,7 +3,7 @@ paths:
   /message:
     post:
       operationId: MessageController_create
-      summary: Create Message
+      summary: Description de create
       parameters: []
       requestBody:
         required: true
@@ -12,18 +12,18 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateMessageDtoImplement'
       responses:
+        '200':
+          description: Réponse réussie
         '201':
-          description: create message
+          description: ''
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Message'
-        '400':
-          description: La requete est incorrecte
+                $ref: '#/components/schemas/Message'
+        '404':
+          description: Ressource non trouvée
         '500':
-          description: Erreur interne au serveur
+          description: Erreur interne du serveur
       tags: &ref_0
         - message
     get:
@@ -82,6 +82,8 @@ paths:
           schema:
             type: number
       responses:
+        '200':
+          description: Réponse réussie
         '204':
           description: Delete message by id
           content:
@@ -93,7 +95,7 @@ paths:
         '400':
           description: La requete est incorrecte
         '404':
-          description: La requete a echoue a trouver le message
+          description: Ressource non trouvée
         '500':
           description: Erreur interne au serveur
       tags: *ref_0
@@ -139,8 +141,8 @@ components:
           format: email
         content:
           type: string
-          maxLength: 400
           minLength: 10
+          maxLength: 400
         createAt:
           format: date-time
           type: string
